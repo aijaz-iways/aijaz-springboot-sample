@@ -9,7 +9,7 @@
 
 ## Development
 
-After starting the application it is accessible under `localhost:8040`.
+After starting the application it is accessible under `localhost:8080`.
 
 ## Build
 
