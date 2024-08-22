@@ -24,3 +24,8 @@ The application can then be started with the following command:
 ```
 java -jar target/demo-0.0.1-SNAPSHOT.jar
 ```
+
+## Test
+```
+curl -XGET 'localhost:8080'
+```
