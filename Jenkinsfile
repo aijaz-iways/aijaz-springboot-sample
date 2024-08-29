@@ -1,8 +1,12 @@
 properties([pipelineTriggers([githubPush()])])
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'demo-app:latest'
+            label 'pwr-do-master'
+        }
+    }
     environment {
-        DOCKER_IMAGE = 'demo-app:latest'
         EMAIL_TO = 'aijaz.ali@i-ways.net'
         gitBranch = 'main'
         gitRepoUrl = 'https://github.com/aijaz-iways/aijaz-springboot-sample.git'
@@ -25,13 +29,19 @@ pipeline {
         stage('build Application') {
             steps {
                 script {
-                    sh "docker build -t ${DOCKER_IMAGE} ."
+                    // Build the Docker image and tag it
+                    def dockerImageTag = "demo-app:${env.BUILD_NUMBER}"
+                    sh "docker build -t ${dockerImageTag} ."
+
+                    // Store the Docker image tag in an environment variable for later use
+                    env.DOCKER_IMAGE = dockerImageTag
                 }
             }
         }
         stage('deployment') {
             steps {
                 script {
+                    // Push the Docker image
                     sh "docker push ${DOCKER_IMAGE}"
                 }
             }
