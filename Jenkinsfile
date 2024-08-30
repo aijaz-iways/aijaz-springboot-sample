@@ -1,5 +1,7 @@
 pipeline {
-    agent any
+    agent {
+        label 'pwr-do-master'
+    }
 
     environment {
         DOCKER_IMAGE = "aijazalipwr/testingalirepos:demo-app"
@@ -14,6 +16,11 @@ pipeline {
         }
 
         stage('Build Maven') {
+            agent {
+                docker {
+                    image 'maven:3.8.4-jdk-11' // Use a Docker image with Maven pre-installed
+                }
+            }
             steps {
                 sh 'mvn clean package -DskipTests'
             }
