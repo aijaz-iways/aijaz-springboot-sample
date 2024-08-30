@@ -1,53 +1,27 @@
-properties([pipelineTriggers([githubPush()])])
 pipeline {
     agent any
+
     environment {
-        DOCKER_IMAGE = 'demo-app:latest'
-        EMAIL_TO = 'aijaz.ali@i-ways.net'
-        gitBranch = 'main'
-        gitRepoUrl = 'https://github.com/aijaz-iways/aijaz-springboot-sample.git'
+        DOCKER_IMAGE = "aijazalipwr/testingalirepos:demo-app"
     }
+
     stages {
-        stage('Checkout Application') {
+        stage('Checkout Code') {
             steps {
-                checkout([$class: 'GitSCM',
-                branches: [[name: "$gitBranch"]],
-                doGenerateSubmoduleConfigurations: false,
-                submoduleCfg: [],
-                userRemoteConfigs: [[url: "$gitRepoUrl", credentialsId: 'githubuser']]])
+                // Pull code from GitHub (or any Git repository)
+                git branch: 'main', url: 'https://github.com/aijaz-iways/aijaz-springboot-sample.git'
             }
         }
-        stage('Build Maven') {
-            steps {
-                sh 'mvn clean package -DskipTests'
-            }
-        }
-        stage('build Application') {
+
+        stage('Build Docker Image') {
             steps {
                 script {
-                    sh "docker build -t ${DOCKER_IMAGE} ."
+                    // Build the Docker image using the Dockerfile
+                    def app = docker.build("${DOCKER_IMAGE}:${env.BUILD_ID}")
                 }
             }
         }
-        stage('deployment') {
-            steps {
-                script {
-                    sh "docker push ${DOCKER_IMAGE}"
-                }
-            }
-        }
+
     }
-    post {
-        failure {
-            emailext body: "Jenkins build url: ${BUILD_URL} \nPlease check the attached the logs \nRegards \ni-ways Devops Team",
-            attachLog: 'true',
-            from: 'jenkins@i-ways.net',
-            subject: 'Failed build in Jenkins: $PROJECT_NAME - #$BUILD_NUMBER',
-            to: "${EMAIL_TO}"
-        }
-        success {
-            emailext body: "Jenkins build url: ${BUILD_URL}\nRegards \ni-ways Devops Team",
-            to: "${EMAIL_TO}",
-            subject: 'Jenkins build Successfull: $PROJECT_NAME - #$BUILD_NUMBER'
-        }
-    }
+
+}
