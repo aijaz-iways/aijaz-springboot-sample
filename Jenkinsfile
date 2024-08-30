@@ -1,5 +1,7 @@
 pipeline {
-    agent any
+    agent {
+        label 'pwr-do-master'
+    }
 
     environment {
         DOCKER_IMAGE = "aijazalipwr/testingalirepos:demo-app"
