@@ -16,6 +16,11 @@ pipeline {
         }
 
         stage('Build Maven') {
+            agent {
+                docker {
+                    image 'maven:3.8.5-openjdk-17' // Use a Docker image with Maven pre-installed
+                }
+            }
             steps {
                 sh 'mvn clean package -DskipTests'
             }
