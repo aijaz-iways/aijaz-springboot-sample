@@ -3,6 +3,11 @@ pipeline {
         label 'pwr-do-master'
     }
 
+    tools {
+      maven 'MAVEN_HOME'
+      jdk 'JAVA_HOME'
+    }
+
     environment {
         DOCKER_IMAGE = "aijazalipwr/testingalirepos:demo-app"
     }
@@ -12,6 +17,12 @@ pipeline {
             steps {
                 // Pull code from GitHub (or any Git repository)
                 git branch: 'main', url: 'https://github.com/aijaz-iways/aijaz-springboot-sample.git'
+            }
+        }
+
+        stage('Build Maven') {
+            steps {
+                sh 'mvn clean package -DskipTests'
             }
         }
 
