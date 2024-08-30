@@ -3,11 +3,6 @@ pipeline {
         label 'pwr-do-master'
     }
 
-    tools {
-      maven 'MAVEN_HOME'
-      jdk 'JAVA_HOME'
-    }
-
     environment {
         DOCKER_IMAGE = "aijazalipwr/testingalirepos:demo-app"
     }
@@ -22,6 +17,8 @@ pipeline {
 
         stage('Build Maven') {
             steps {
+                def mvnHome = tool name: 'maven-3.8.6', type: 'maven'
+                sh "${mvnHome}/bin/mvn package"
                 sh 'mvn clean package -DskipTests'
             }
         }
