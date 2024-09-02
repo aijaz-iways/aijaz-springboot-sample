@@ -8,7 +8,7 @@ pipeline {
     }
 
     environment {
-        DOCKER_IMAGE = "aijazalipwr/testingalirepos:demo"
+        DOCKER_IMAGE = "aijazalipwr/testingalirepos"
     }
 
     stages {
