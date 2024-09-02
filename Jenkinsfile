@@ -30,7 +30,7 @@ pipeline {
             steps {
                 script {
                     // Build the Docker image using the Dockerfile
-                    def app = docker.build("${DOCKER_IMAGE}")
+                    app = docker.build("${DOCKER_IMAGE}")
                 }
             }
         }
