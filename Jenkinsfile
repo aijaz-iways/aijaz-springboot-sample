@@ -3,7 +3,7 @@ pipeline {
         docker {
             image 'maven:3.9.2-amazoncorretto-17'
             label 'master'
-            args '-v /~jenkins/stage_server:/~jenkins/stage_server'
+            args '-v /~jenkins/stage_server:/~jenkins/stage_server --privileged'
         }
     }
 
@@ -23,6 +23,15 @@ pipeline {
             steps {
                 sh '''
                 mvn clean package --no-transfer-progress -DskipTests
+                '''
+            }
+        }
+
+        stage('Install Docker') {
+            steps {
+                sh '''
+                apt-get update
+                apt-get install -y docker.io
                 '''
             }
         }
