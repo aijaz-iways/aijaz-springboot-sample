@@ -8,7 +8,7 @@ pipeline {
     }
 
     environment {
-        DOCKER_IMAGE = "aijazalipwr/testingalirepos"
+        DOCKER_IMAGE = "aijazalipwr/testingalirepos:demo"
     }
 
     stages {
@@ -31,7 +31,7 @@ pipeline {
             steps {
                 script {
                     // Build the Docker image using the Dockerfile
-                    def app = docker.build("${DOCKER_IMAGE}:demo")
+                    def app = docker.build("${DOCKER_IMAGE}:${env.BUILD_ID}")
                 }
             }
         }
