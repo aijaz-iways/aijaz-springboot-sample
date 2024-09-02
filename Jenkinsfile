@@ -1,9 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            label 'master'
-        }
-    }
+    agent { node { label 'master' } }
 
     environment {
         DOCKER_IMAGE = "aijazalipwr/testingalirepos:demo"
@@ -28,4 +24,4 @@ pipeline {
 
     }
 
-}
+ }
