@@ -1,5 +1,11 @@
 pipeline {
-    agent { node { label 'master' } }
+    agent {
+        docker {
+            image 'maven:3.9.2-amazoncorretto-17'
+            label 'master'
+            args '-v /~jenkins/stage_server:/~jenkins/stage_server'
+        }
+    }
 
     environment {
         DOCKER_IMAGE = "aijazalipwr/testingalirepos:demo-app"
