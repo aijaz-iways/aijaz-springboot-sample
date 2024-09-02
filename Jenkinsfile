@@ -1,5 +1,4 @@
 pipeline {
-    def app
     agent {
         docker {
             image 'maven:3.9.2-amazoncorretto-17'
@@ -30,14 +29,8 @@ pipeline {
             steps {
                 script {
                     // Build the Docker image using the Dockerfile
-                    app = docker.build("${DOCKER_IMAGE}")
+                    docker.build("${DOCKER_IMAGE}")
                 }
-            }
-        }
-
-        stage('Test image') {
-            app.inside {
-                sh 'echo "Tests passed"'
             }
         }
 
