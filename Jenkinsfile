@@ -27,10 +27,9 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                script {
-                    // Build the Docker image using the Dockerfile
-                    def app = docker.build("${DOCKER_IMAGE}:${env.BUILD_ID}")
-                }
+                sh """
+                     docker build --no-cache -t "${DOCKER_IMAGE}" .
+                    """
             }
         }
 
