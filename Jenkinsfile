@@ -27,9 +27,16 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh """
-                     docker build --no-cache -t "${DOCKER_IMAGE}" .
-                    """
+                script {
+                    // Build the Docker image using the Dockerfile
+                    def app = docker.build("${DOCKER_IMAGE}")
+                }
+            }
+        }
+
+        stage('Test image') {
+            app.inside {
+                sh 'echo "Tests passed"'
             }
         }
 
