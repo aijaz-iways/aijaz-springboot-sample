@@ -21,16 +21,17 @@ pipeline {
 
         stage('Build Maven') {
             steps {
-                sh 'mvn clean package -DskipTests'
+                sh '''
+                mvn clean package --no-transfer-progress -DskipTests
+                '''
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                script {
-                    // Build the Docker image using the Dockerfile
-                    def app = docker.build("${DOCKER_IMAGE}:${env.BUILD_ID}")
-                }
+                sh '''
+                docker build --no-cache -t demo .
+                '''
             }
         }
 
