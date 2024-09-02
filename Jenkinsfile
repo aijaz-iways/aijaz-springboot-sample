@@ -31,7 +31,7 @@ pipeline {
             steps {
                 script {
                     // Build the Docker image using the Dockerfile
-                    def app = docker.build("demo")
+                    def app = docker.build("${DOCKER_IMAGE}:${env.BUILD_ID}")
                 }
             }
         }
